@@ -90,6 +90,13 @@ export type CliMatch = {
   extra: CliMatchExtra;
 }
 
+export type EnclosureElem = {
+  kind: string;
+  name: string;
+  start?: Position;
+  end?: Position;
+}
+
 export type CliMatchExtra = {
   metavars?: Metavars;
   message: string;
@@ -106,6 +113,7 @@ export type CliMatchExtra = {
   dataflow_trace?: MatchDataflowTrace;
   engine_kind?: EngineOfFinding;
   extra_extra?: RawJson;
+  enclosure?: EnclosureElem[];
 }
 
 export type Metavars = Map<string, MetavarValue>
@@ -825,6 +833,7 @@ export type CoreMatchExtra = {
   validation_state?: ValidationState;
   historical_info?: HistoricalInfo;
   extra_extra?: RawJson;
+  enclosure?: EnclosureElem[];
 }
 
 export type CoreError = {
@@ -1312,6 +1321,24 @@ export function readCliMatch(x: any, context: any = x): CliMatch {
   };
 }
 
+export function writeEnclosureElem(x: EnclosureElem, context: any = x): any {
+  return {
+    'kind': _atd_write_required_field('EnclosureElem', 'kind', _atd_write_string, x.kind, x),
+    'name': _atd_write_required_field('EnclosureElem', 'name', _atd_write_string, x.name, x),
+    'start': _atd_write_optional_field(writePosition, x.start, x),
+    'end': _atd_write_optional_field(writePosition, x.end, x),
+  };
+}
+
+export function readEnclosureElem(x: any, context: any = x): EnclosureElem {
+  return {
+    kind: _atd_read_required_field('EnclosureElem', 'kind', _atd_read_string, x['kind'], x),
+    name: _atd_read_required_field('EnclosureElem', 'name', _atd_read_string, x['name'], x),
+    start: _atd_read_optional_field(readPosition, x['start'], x),
+    end: _atd_read_optional_field(readPosition, x['end'], x),
+  };
+}
+
 export function writeCliMatchExtra(x: CliMatchExtra, context: any = x): any {
   return {
     'metavars': _atd_write_optional_field(writeMetavars, x.metavars, x),
@@ -1329,6 +1356,7 @@ export function writeCliMatchExtra(x: CliMatchExtra, context: any = x): any {
     'dataflow_trace': _atd_write_optional_field(writeMatchDataflowTrace, x.dataflow_trace, x),
     'engine_kind': _atd_write_optional_field(writeEngineOfFinding, x.engine_kind, x),
     'extra_extra': _atd_write_optional_field(writeRawJson, x.extra_extra, x),
+    'enclosure': _atd_write_optional_field(_atd_write_array(writeEnclosureElem), x.enclosure, x),
   };
 }
 
@@ -1349,6 +1377,7 @@ export function readCliMatchExtra(x: any, context: any = x): CliMatchExtra {
     dataflow_trace: _atd_read_optional_field(readMatchDataflowTrace, x['dataflow_trace'], x),
     engine_kind: _atd_read_optional_field(readEngineOfFinding, x['engine_kind'], x),
     extra_extra: _atd_read_optional_field(readRawJson, x['extra_extra'], x),
+    enclosure: _atd_read_optional_field(_atd_read_array(readEnclosureElem), x['enclosure'], x),
   };
 }
 
@@ -3490,6 +3519,7 @@ export function writeCoreMatchExtra(x: CoreMatchExtra, context: any = x): any {
     'validation_state': _atd_write_optional_field(writeValidationState, x.validation_state, x),
     'historical_info': _atd_write_optional_field(writeHistoricalInfo, x.historical_info, x),
     'extra_extra': _atd_write_optional_field(writeRawJson, x.extra_extra, x),
+    'enclosure': _atd_write_optional_field(_atd_write_array(writeEnclosureElem), x.enclosure, x),
   };
 }
 
@@ -3507,6 +3537,7 @@ export function readCoreMatchExtra(x: any, context: any = x): CoreMatchExtra {
     validation_state: _atd_read_optional_field(readValidationState, x['validation_state'], x),
     historical_info: _atd_read_optional_field(readHistoricalInfo, x['historical_info'], x),
     extra_extra: _atd_read_optional_field(readRawJson, x['extra_extra'], x),
+    enclosure: _atd_read_optional_field(_atd_read_array(readEnclosureElem), x['enclosure'], x),
   };
 }
 

@@ -132,6 +132,16 @@
         "extra": { "$ref": "#/definitions/cli_match_extra" }
       }
     },
+    "enclosure_elem": {
+      "type": "object",
+      "required": [ "kind", "name" ],
+      "properties": {
+        "kind": { "type": "string" },
+        "name": { "type": "string" },
+        "start": { "$ref": "#/definitions/position" },
+        "end": { "$ref": "#/definitions/position" }
+      }
+    },
     "cli_match_extra": {
       "type": "object",
       "required": [
@@ -152,7 +162,11 @@
         "historical_info": { "$ref": "#/definitions/historical_info" },
         "dataflow_trace": { "$ref": "#/definitions/match_dataflow_trace" },
         "engine_kind": { "$ref": "#/definitions/engine_of_finding" },
-        "extra_extra": { "$ref": "#/definitions/raw_json" }
+        "extra_extra": { "$ref": "#/definitions/raw_json" },
+        "enclosure": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/enclosure_elem" }
+        }
       }
     },
     "metavars": {
@@ -1509,7 +1523,11 @@
         "sca_match": { "$ref": "#/definitions/sca_match" },
         "validation_state": { "$ref": "#/definitions/validation_state" },
         "historical_info": { "$ref": "#/definitions/historical_info" },
-        "extra_extra": { "$ref": "#/definitions/raw_json" }
+        "extra_extra": { "$ref": "#/definitions/raw_json" },
+        "enclosure": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/enclosure_elem" }
+        }
       }
     },
     "core_error": {

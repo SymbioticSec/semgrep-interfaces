@@ -268,6 +268,13 @@ type cli_match = {
   extra: cli_match_extra;
 }
 
+type enclosure_elem = {
+  kind : string;
+  name : string;
+  ?start : position option;
+  ?end<ocaml name="end_">: position option;
+}
+
 type cli_match_extra = {
   (* Since 1.98.0, you need to be logged in to get this field.
    * note: we also need ?metavars because dependency_aware code *)
@@ -314,6 +321,9 @@ type cli_match_extra = {
 
   (* EXPERIMENTAL: see core_match_extra.extra_extra *)
   ?extra_extra: raw_json option;
+  
+  (* EXPERIMENTAL: enclosure of the match *)
+  ?enclosure: enclosure_elem list option;
 }
 
 (*****************************************************************************)
@@ -1829,6 +1839,9 @@ type core_match_extra <python decorator="dataclass(frozen=True)"> = {
    * --core-opts flag.
    *)
   ?extra_extra: raw_json option;
+  
+  (* EXPERIMENTAL: enclosure of the match *)
+  ?enclosure: enclosure_elem list option;
 }
 
 (* See Semgrep_error_code.ml *)

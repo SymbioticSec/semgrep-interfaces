@@ -39,6 +39,13 @@ type position = Semgrep_output_v1_t.position = {
 }
   [@@deriving show]
 
+type enclosure_elem = Semgrep_output_v1_t.enclosure_elem = {
+  kind: string;
+  name: string;
+  start: position option;
+  end_ (*atd end *): position option
+}
+
 type location = Semgrep_output_v1_t.location = {
   path: fpath;
   start: position;
@@ -152,7 +159,8 @@ type core_match_extra = Semgrep_output_v1_t.core_match_extra = {
   sca_match: sca_match option;
   validation_state: validation_state option;
   historical_info: historical_info option;
-  extra_extra: raw_json option
+  extra_extra: raw_json option;
+  enclosure: enclosure_elem list option
 }
 
 type core_match = Semgrep_output_v1_t.core_match = {
@@ -571,7 +579,8 @@ type cli_match_extra = Semgrep_output_v1_t.cli_match_extra = {
   historical_info: historical_info option;
   dataflow_trace: match_dataflow_trace option;
   engine_kind: engine_of_finding option;
-  extra_extra: raw_json option
+  extra_extra: raw_json option;
+  enclosure: enclosure_elem list option
 }
 
 type cli_match = Semgrep_output_v1_t.cli_match = {
@@ -1029,6 +1038,26 @@ val read_position :
 val position_of_string :
   string -> position
   (** Deserialize JSON data of type {!type:position}. *)
+
+val write_enclosure_elem :
+  Buffer.t -> enclosure_elem -> unit
+  (** Output a JSON value of type {!type:enclosure_elem}. *)
+
+val string_of_enclosure_elem :
+  ?len:int -> enclosure_elem -> string
+  (** Serialize a value of type {!type:enclosure_elem}
+      into a JSON string.
+      @param len specifies the initial length
+                 of the buffer used internally.
+                 Default: 1024. *)
+
+val read_enclosure_elem :
+  Yojson.Safe.lexer_state -> Lexing.lexbuf -> enclosure_elem
+  (** Input JSON data of type {!type:enclosure_elem}. *)
+
+val enclosure_elem_of_string :
+  string -> enclosure_elem
+  (** Deserialize JSON data of type {!type:enclosure_elem}. *)
 
 val write_location :
   Buffer.t -> location -> unit

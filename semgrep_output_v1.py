@@ -1102,6 +1102,45 @@ class Position:
         return json.dumps(self.to_json(), **kw)
 
 
+@dataclass
+class EnclosureElem:
+    """Original type: enclosure_elem = { ... }"""
+
+    kind: str
+    name: str
+    start: Optional[Position] = None
+    end: Optional[Position] = None
+
+    @classmethod
+    def from_json(cls, x: Any) -> 'EnclosureElem':
+        if isinstance(x, dict):
+            return cls(
+                kind=_atd_read_string(x['kind']) if 'kind' in x else _atd_missing_json_field('EnclosureElem', 'kind'),
+                name=_atd_read_string(x['name']) if 'name' in x else _atd_missing_json_field('EnclosureElem', 'name'),
+                start=Position.from_json(x['start']) if 'start' in x else None,
+                end=Position.from_json(x['end']) if 'end' in x else None,
+            )
+        else:
+            _atd_bad_json('EnclosureElem', x)
+
+    def to_json(self) -> Any:
+        res: Dict[str, Any] = {}
+        res['kind'] = _atd_write_string(self.kind)
+        res['name'] = _atd_write_string(self.name)
+        if self.start is not None:
+            res['start'] = (lambda x: x.to_json())(self.start)
+        if self.end is not None:
+            res['end'] = (lambda x: x.to_json())(self.end)
+        return res
+
+    @classmethod
+    def from_json_string(cls, x: str) -> 'EnclosureElem':
+        return cls.from_json(json.loads(x))
+
+    def to_json_string(self, **kw: Any) -> str:
+        return json.dumps(self.to_json(), **kw)
+
+
 @dataclass(frozen=True)
 class Location:
     """Original type: location = { ... }"""
@@ -1984,6 +2023,7 @@ class CoreMatchExtra:
     validation_state: Optional[ValidationState] = None
     historical_info: Optional[HistoricalInfo] = None
     extra_extra: Optional[RawJson] = None
+    enclosure: Optional[List[EnclosureElem]] = None
 
     @classmethod
     def from_json(cls, x: Any) -> 'CoreMatchExtra':
@@ -2001,6 +2041,7 @@ class CoreMatchExtra:
                 validation_state=ValidationState.from_json(x['validation_state']) if 'validation_state' in x else None,
                 historical_info=HistoricalInfo.from_json(x['historical_info']) if 'historical_info' in x else None,
                 extra_extra=RawJson.from_json(x['extra_extra']) if 'extra_extra' in x else None,
+                enclosure=_atd_read_list(EnclosureElem.from_json)(x['enclosure']) if 'enclosure' in x else None,
             )
         else:
             _atd_bad_json('CoreMatchExtra', x)
@@ -2028,6 +2069,8 @@ class CoreMatchExtra:
             res['historical_info'] = (lambda x: x.to_json())(self.historical_info)
         if self.extra_extra is not None:
             res['extra_extra'] = (lambda x: x.to_json())(self.extra_extra)
+        if self.enclosure is not None:
+            res['enclosure'] = _atd_write_list((lambda x: x.to_json()))(self.enclosure)
         return res
 
     @classmethod
@@ -6736,6 +6779,7 @@ class CliMatchExtra:
     dataflow_trace: Optional[MatchDataflowTrace] = None
     engine_kind: Optional[EngineOfFinding] = None
     extra_extra: Optional[RawJson] = None
+    enclosure: Optional[List[EnclosureElem]] = None
 
     @classmethod
     def from_json(cls, x: Any) -> 'CliMatchExtra':
@@ -6756,6 +6800,7 @@ class CliMatchExtra:
                 dataflow_trace=MatchDataflowTrace.from_json(x['dataflow_trace']) if 'dataflow_trace' in x else None,
                 engine_kind=EngineOfFinding.from_json(x['engine_kind']) if 'engine_kind' in x else None,
                 extra_extra=RawJson.from_json(x['extra_extra']) if 'extra_extra' in x else None,
+                enclosure=_atd_read_list(EnclosureElem.from_json)(x['enclosure']) if 'enclosure' in x else None,
             )
         else:
             _atd_bad_json('CliMatchExtra', x)
@@ -6787,6 +6832,8 @@ class CliMatchExtra:
             res['engine_kind'] = (lambda x: x.to_json())(self.engine_kind)
         if self.extra_extra is not None:
             res['extra_extra'] = (lambda x: x.to_json())(self.extra_extra)
+        if self.enclosure is not None:
+            res['enclosure'] = _atd_write_list((lambda x: x.to_json()))(self.enclosure)
         return res
 
     @classmethod
