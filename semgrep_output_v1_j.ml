@@ -39,7 +39,7 @@ type position = Semgrep_output_v1_t.position = {
 }
   [@@deriving show]
 
-type enclosure_elem = Semgrep_output_v1_t.enclosure_elem = {
+type enclosing_context_elem = Semgrep_output_v1_t.enclosing_context_elem = {
   kind: string;
   name: string;
   start: position option;
@@ -160,7 +160,7 @@ type core_match_extra = Semgrep_output_v1_t.core_match_extra = {
   validation_state: validation_state option;
   historical_info: historical_info option;
   extra_extra: raw_json option;
-  enclosure: enclosure_elem list option
+  enclosing_context: enclosing_context_elem list option
 }
 
 type core_match = Semgrep_output_v1_t.core_match = {
@@ -580,7 +580,7 @@ type cli_match_extra = Semgrep_output_v1_t.cli_match_extra = {
   dataflow_trace: match_dataflow_trace option;
   engine_kind: engine_of_finding option;
   extra_extra: raw_json option;
-  enclosure: enclosure_elem list option
+  enclosing_context: enclosing_context_elem list option
 }
 
 type cli_match = Semgrep_output_v1_t.cli_match = {
@@ -2118,8 +2118,8 @@ let read__position_option = (
 )
 let _position_option_of_string s =
   read__position_option (Yojson.Safe.init_lexer ()) (Lexing.from_string s)
-let write_enclosure_elem : _ -> enclosure_elem -> _ = (
-  fun ob (x : enclosure_elem) ->
+let write_enclosing_context_elem : _ -> enclosing_context_elem -> _ = (
+  fun ob (x : enclosing_context_elem) ->
     Buffer.add_char ob '{';
     let is_first = ref true in
     if !is_first then
@@ -2164,11 +2164,11 @@ let write_enclosure_elem : _ -> enclosure_elem -> _ = (
     );
     Buffer.add_char ob '}';
 )
-let string_of_enclosure_elem ?(len = 1024) x =
+let string_of_enclosing_context_elem ?(len = 1024) x =
   let ob = Buffer.create len in
-  write_enclosure_elem ob x;
+  write_enclosing_context_elem ob x;
   Buffer.contents ob
-let read_enclosure_elem = (
+let read_enclosing_context_elem = (
   fun p lb ->
     Yojson.Safe.read_space p lb;
     Yojson.Safe.read_lcurl p lb;
@@ -2376,37 +2376,37 @@ let read_enclosure_elem = (
             start = !field_start;
             end_ = !field_end_;
           }
-         : enclosure_elem)
+         : enclosing_context_elem)
       )
 )
-let enclosure_elem_of_string s =
-  read_enclosure_elem (Yojson.Safe.init_lexer ()) (Lexing.from_string s)
-let write__enclosure_elem_list = (
+let enclosing_context_elem_of_string s =
+  read_enclosing_context_elem (Yojson.Safe.init_lexer ()) (Lexing.from_string s)
+let write__enclosing_context_elem_list = (
   Atdgen_runtime.Oj_run.write_list (
-    write_enclosure_elem
+    write_enclosing_context_elem
   )
 )
-let string_of__enclosure_elem_list ?(len = 1024) x =
+let string_of__enclosing_context_elem_list ?(len = 1024) x =
   let ob = Buffer.create len in
-  write__enclosure_elem_list ob x;
+  write__enclosing_context_elem_list ob x;
   Buffer.contents ob
-let read__enclosure_elem_list = (
+let read__enclosing_context_elem_list = (
   Atdgen_runtime.Oj_run.read_list (
-    read_enclosure_elem
+    read_enclosing_context_elem
   )
 )
-let _enclosure_elem_list_of_string s =
-  read__enclosure_elem_list (Yojson.Safe.init_lexer ()) (Lexing.from_string s)
-let write__enclosure_elem_list_option = (
+let _enclosing_context_elem_list_of_string s =
+  read__enclosing_context_elem_list (Yojson.Safe.init_lexer ()) (Lexing.from_string s)
+let write__enclosing_context_elem_list_option = (
   Atdgen_runtime.Oj_run.write_std_option (
-    write__enclosure_elem_list
+    write__enclosing_context_elem_list
   )
 )
-let string_of__enclosure_elem_list_option ?(len = 1024) x =
+let string_of__enclosing_context_elem_list_option ?(len = 1024) x =
   let ob = Buffer.create len in
-  write__enclosure_elem_list_option ob x;
+  write__enclosing_context_elem_list_option ob x;
   Buffer.contents ob
-let read__enclosure_elem_list_option = (
+let read__enclosing_context_elem_list_option = (
   fun p lb ->
     Yojson.Safe.read_space p lb;
     match Yojson.Safe.start_any_variant p lb with
@@ -2419,7 +2419,7 @@ let read__enclosure_elem_list_option = (
             | "Some" ->
               Atdgen_runtime.Oj_run.read_until_field_value p lb;
               let x = (
-                  read__enclosure_elem_list
+                  read__enclosing_context_elem_list
                 ) p lb
               in
               Yojson.Safe.read_space p lb;
@@ -2442,7 +2442,7 @@ let read__enclosure_elem_list_option = (
               Yojson.Safe.read_comma p lb;
               Yojson.Safe.read_space p lb;
               let x = (
-                  read__enclosure_elem_list
+                  read__enclosing_context_elem_list
                 ) p lb
               in
               Yojson.Safe.read_space p lb;
@@ -2452,8 +2452,8 @@ let read__enclosure_elem_list_option = (
               Atdgen_runtime.Oj_run.invalid_variant_tag p x
         )
 )
-let _enclosure_elem_list_option_of_string s =
-  read__enclosure_elem_list_option (Yojson.Safe.init_lexer ()) (Lexing.from_string s)
+let _enclosing_context_elem_list_option_of_string s =
+  read__enclosing_context_elem_list_option (Yojson.Safe.init_lexer ()) (Lexing.from_string s)
 let write_location : _ -> location -> _ = (
   fun ob (x : location) ->
     Buffer.add_char ob '{';
@@ -6322,14 +6322,14 @@ let write_core_match_extra : _ -> core_match_extra -> _ = (
       )
         ob x;
     );
-    (match x.enclosure with None -> () | Some x ->
+    (match x.enclosing_context with None -> () | Some x ->
       if !is_first then
         is_first := false
       else
         Buffer.add_char ob ',';
-        Buffer.add_string ob "\"enclosure\":";
+        Buffer.add_string ob "\"enclosing_context\":";
       (
-        write__enclosure_elem_list
+        write__enclosing_context_elem_list
       )
         ob x;
     );
@@ -6355,7 +6355,7 @@ let read_core_match_extra = (
     let field_validation_state = ref (None) in
     let field_historical_info = ref (None) in
     let field_extra_extra = ref (None) in
-    let field_enclosure = ref (None) in
+    let field_enclosing_context = ref (None) in
     try
       Yojson.Safe.read_space p lb;
       Yojson.Safe.read_object_end lb;
@@ -6423,26 +6423,12 @@ let read_core_match_extra = (
                     )
               )
             | 9 -> (
-                match String.unsafe_get s pos with
-                  | 'e' -> (
-                      if String.unsafe_get s (pos+1) = 'n' && String.unsafe_get s (pos+2) = 'c' && String.unsafe_get s (pos+3) = 'l' && String.unsafe_get s (pos+4) = 'o' && String.unsafe_get s (pos+5) = 's' && String.unsafe_get s (pos+6) = 'u' && String.unsafe_get s (pos+7) = 'r' && String.unsafe_get s (pos+8) = 'e' then (
-                        12
-                      )
-                      else (
-                        -1
-                      )
-                    )
-                  | 's' -> (
-                      if String.unsafe_get s (pos+1) = 'c' && String.unsafe_get s (pos+2) = 'a' && String.unsafe_get s (pos+3) = '_' && String.unsafe_get s (pos+4) = 'm' && String.unsafe_get s (pos+5) = 'a' && String.unsafe_get s (pos+6) = 't' && String.unsafe_get s (pos+7) = 'c' && String.unsafe_get s (pos+8) = 'h' then (
-                        8
-                      )
-                      else (
-                        -1
-                      )
-                    )
-                  | _ -> (
-                      -1
-                    )
+                if String.unsafe_get s pos = 's' && String.unsafe_get s (pos+1) = 'c' && String.unsafe_get s (pos+2) = 'a' && String.unsafe_get s (pos+3) = '_' && String.unsafe_get s (pos+4) = 'm' && String.unsafe_get s (pos+5) = 'a' && String.unsafe_get s (pos+6) = 't' && String.unsafe_get s (pos+7) = 'c' && String.unsafe_get s (pos+8) = 'h' then (
+                  8
+                )
+                else (
+                  -1
+                )
               )
             | 10 -> (
                 if String.unsafe_get s pos = 'i' && String.unsafe_get s (pos+1) = 's' && String.unsafe_get s (pos+2) = '_' && String.unsafe_get s (pos+3) = 'i' && String.unsafe_get s (pos+4) = 'g' && String.unsafe_get s (pos+5) = 'n' && String.unsafe_get s (pos+6) = 'o' && String.unsafe_get s (pos+7) = 'r' && String.unsafe_get s (pos+8) = 'e' && String.unsafe_get s (pos+9) = 'd' then (
@@ -6498,6 +6484,14 @@ let read_core_match_extra = (
             | 16 -> (
                 if String.unsafe_get s pos = 'v' && String.unsafe_get s (pos+1) = 'a' && String.unsafe_get s (pos+2) = 'l' && String.unsafe_get s (pos+3) = 'i' && String.unsafe_get s (pos+4) = 'd' && String.unsafe_get s (pos+5) = 'a' && String.unsafe_get s (pos+6) = 't' && String.unsafe_get s (pos+7) = 'i' && String.unsafe_get s (pos+8) = 'o' && String.unsafe_get s (pos+9) = 'n' && String.unsafe_get s (pos+10) = '_' && String.unsafe_get s (pos+11) = 's' && String.unsafe_get s (pos+12) = 't' && String.unsafe_get s (pos+13) = 'a' && String.unsafe_get s (pos+14) = 't' && String.unsafe_get s (pos+15) = 'e' then (
                   9
+                )
+                else (
+                  -1
+                )
+              )
+            | 17 -> (
+                if String.unsafe_get s pos = 'e' && String.unsafe_get s (pos+1) = 'n' && String.unsafe_get s (pos+2) = 'c' && String.unsafe_get s (pos+3) = 'l' && String.unsafe_get s (pos+4) = 'o' && String.unsafe_get s (pos+5) = 's' && String.unsafe_get s (pos+6) = 'i' && String.unsafe_get s (pos+7) = 'n' && String.unsafe_get s (pos+8) = 'g' && String.unsafe_get s (pos+9) = '_' && String.unsafe_get s (pos+10) = 'c' && String.unsafe_get s (pos+11) = 'o' && String.unsafe_get s (pos+12) = 'n' && String.unsafe_get s (pos+13) = 't' && String.unsafe_get s (pos+14) = 'e' && String.unsafe_get s (pos+15) = 'x' && String.unsafe_get s (pos+16) = 't' then (
+                  12
                 )
                 else (
                   -1
@@ -6627,10 +6621,10 @@ let read_core_match_extra = (
             )
           | 12 ->
             if not (Yojson.Safe.read_null_if_possible p lb) then (
-              field_enclosure := (
+              field_enclosing_context := (
                 Some (
                   (
-                    read__enclosure_elem_list
+                    read__enclosing_context_elem_list
                   ) p lb
                 )
               );
@@ -6706,26 +6700,12 @@ let read_core_match_extra = (
                       )
                 )
               | 9 -> (
-                  match String.unsafe_get s pos with
-                    | 'e' -> (
-                        if String.unsafe_get s (pos+1) = 'n' && String.unsafe_get s (pos+2) = 'c' && String.unsafe_get s (pos+3) = 'l' && String.unsafe_get s (pos+4) = 'o' && String.unsafe_get s (pos+5) = 's' && String.unsafe_get s (pos+6) = 'u' && String.unsafe_get s (pos+7) = 'r' && String.unsafe_get s (pos+8) = 'e' then (
-                          12
-                        )
-                        else (
-                          -1
-                        )
-                      )
-                    | 's' -> (
-                        if String.unsafe_get s (pos+1) = 'c' && String.unsafe_get s (pos+2) = 'a' && String.unsafe_get s (pos+3) = '_' && String.unsafe_get s (pos+4) = 'm' && String.unsafe_get s (pos+5) = 'a' && String.unsafe_get s (pos+6) = 't' && String.unsafe_get s (pos+7) = 'c' && String.unsafe_get s (pos+8) = 'h' then (
-                          8
-                        )
-                        else (
-                          -1
-                        )
-                      )
-                    | _ -> (
-                        -1
-                      )
+                  if String.unsafe_get s pos = 's' && String.unsafe_get s (pos+1) = 'c' && String.unsafe_get s (pos+2) = 'a' && String.unsafe_get s (pos+3) = '_' && String.unsafe_get s (pos+4) = 'm' && String.unsafe_get s (pos+5) = 'a' && String.unsafe_get s (pos+6) = 't' && String.unsafe_get s (pos+7) = 'c' && String.unsafe_get s (pos+8) = 'h' then (
+                    8
+                  )
+                  else (
+                    -1
+                  )
                 )
               | 10 -> (
                   if String.unsafe_get s pos = 'i' && String.unsafe_get s (pos+1) = 's' && String.unsafe_get s (pos+2) = '_' && String.unsafe_get s (pos+3) = 'i' && String.unsafe_get s (pos+4) = 'g' && String.unsafe_get s (pos+5) = 'n' && String.unsafe_get s (pos+6) = 'o' && String.unsafe_get s (pos+7) = 'r' && String.unsafe_get s (pos+8) = 'e' && String.unsafe_get s (pos+9) = 'd' then (
@@ -6781,6 +6761,14 @@ let read_core_match_extra = (
               | 16 -> (
                   if String.unsafe_get s pos = 'v' && String.unsafe_get s (pos+1) = 'a' && String.unsafe_get s (pos+2) = 'l' && String.unsafe_get s (pos+3) = 'i' && String.unsafe_get s (pos+4) = 'd' && String.unsafe_get s (pos+5) = 'a' && String.unsafe_get s (pos+6) = 't' && String.unsafe_get s (pos+7) = 'i' && String.unsafe_get s (pos+8) = 'o' && String.unsafe_get s (pos+9) = 'n' && String.unsafe_get s (pos+10) = '_' && String.unsafe_get s (pos+11) = 's' && String.unsafe_get s (pos+12) = 't' && String.unsafe_get s (pos+13) = 'a' && String.unsafe_get s (pos+14) = 't' && String.unsafe_get s (pos+15) = 'e' then (
                     9
+                  )
+                  else (
+                    -1
+                  )
+                )
+              | 17 -> (
+                  if String.unsafe_get s pos = 'e' && String.unsafe_get s (pos+1) = 'n' && String.unsafe_get s (pos+2) = 'c' && String.unsafe_get s (pos+3) = 'l' && String.unsafe_get s (pos+4) = 'o' && String.unsafe_get s (pos+5) = 's' && String.unsafe_get s (pos+6) = 'i' && String.unsafe_get s (pos+7) = 'n' && String.unsafe_get s (pos+8) = 'g' && String.unsafe_get s (pos+9) = '_' && String.unsafe_get s (pos+10) = 'c' && String.unsafe_get s (pos+11) = 'o' && String.unsafe_get s (pos+12) = 'n' && String.unsafe_get s (pos+13) = 't' && String.unsafe_get s (pos+14) = 'e' && String.unsafe_get s (pos+15) = 'x' && String.unsafe_get s (pos+16) = 't' then (
+                    12
                   )
                   else (
                     -1
@@ -6910,10 +6898,10 @@ let read_core_match_extra = (
               )
             | 12 ->
               if not (Yojson.Safe.read_null_if_possible p lb) then (
-                field_enclosure := (
+                field_enclosing_context := (
                   Some (
                     (
-                      read__enclosure_elem_list
+                      read__enclosing_context_elem_list
                     ) p lb
                   )
                 );
@@ -6939,7 +6927,7 @@ let read_core_match_extra = (
             validation_state = !field_validation_state;
             historical_info = !field_historical_info;
             extra_extra = !field_extra_extra;
-            enclosure = !field_enclosure;
+            enclosing_context = !field_enclosing_context;
           }
          : core_match_extra)
       )
@@ -21672,14 +21660,14 @@ let write_cli_match_extra : _ -> cli_match_extra -> _ = (
       )
         ob x;
     );
-    (match x.enclosure with None -> () | Some x ->
+    (match x.enclosing_context with None -> () | Some x ->
       if !is_first then
         is_first := false
       else
         Buffer.add_char ob ',';
-        Buffer.add_string ob "\"enclosure\":";
+        Buffer.add_string ob "\"enclosing_context\":";
       (
-        write__enclosure_elem_list
+        write__enclosing_context_elem_list
       )
         ob x;
     );
@@ -21708,7 +21696,7 @@ let read_cli_match_extra = (
     let field_dataflow_trace = ref (None) in
     let field_engine_kind = ref (None) in
     let field_extra_extra = ref (None) in
-    let field_enclosure = ref (None) in
+    let field_enclosing_context = ref (None) in
     try
       Yojson.Safe.read_space p lb;
       Yojson.Safe.read_object_end lb;
@@ -21797,14 +21785,6 @@ let read_cli_match_extra = (
                       -1
                     )
               )
-            | 9 -> (
-                if String.unsafe_get s pos = 'e' && String.unsafe_get s (pos+1) = 'n' && String.unsafe_get s (pos+2) = 'c' && String.unsafe_get s (pos+3) = 'l' && String.unsafe_get s (pos+4) = 'o' && String.unsafe_get s (pos+5) = 's' && String.unsafe_get s (pos+6) = 'u' && String.unsafe_get s (pos+7) = 'r' && String.unsafe_get s (pos+8) = 'e' then (
-                  15
-                )
-                else (
-                  -1
-                )
-              )
             | 10 -> (
                 if String.unsafe_get s pos = 'i' && String.unsafe_get s (pos+1) = 's' && String.unsafe_get s (pos+2) = '_' && String.unsafe_get s (pos+3) = 'i' && String.unsafe_get s (pos+4) = 'g' && String.unsafe_get s (pos+5) = 'n' && String.unsafe_get s (pos+6) = 'o' && String.unsafe_get s (pos+7) = 'r' && String.unsafe_get s (pos+8) = 'e' && String.unsafe_get s (pos+9) = 'd' then (
                   8
@@ -21887,6 +21867,14 @@ let read_cli_match_extra = (
             | 16 -> (
                 if String.unsafe_get s pos = 'v' && String.unsafe_get s (pos+1) = 'a' && String.unsafe_get s (pos+2) = 'l' && String.unsafe_get s (pos+3) = 'i' && String.unsafe_get s (pos+4) = 'd' && String.unsafe_get s (pos+5) = 'a' && String.unsafe_get s (pos+6) = 't' && String.unsafe_get s (pos+7) = 'i' && String.unsafe_get s (pos+8) = 'o' && String.unsafe_get s (pos+9) = 'n' && String.unsafe_get s (pos+10) = '_' && String.unsafe_get s (pos+11) = 's' && String.unsafe_get s (pos+12) = 't' && String.unsafe_get s (pos+13) = 'a' && String.unsafe_get s (pos+14) = 't' && String.unsafe_get s (pos+15) = 'e' then (
                   10
+                )
+                else (
+                  -1
+                )
+              )
+            | 17 -> (
+                if String.unsafe_get s pos = 'e' && String.unsafe_get s (pos+1) = 'n' && String.unsafe_get s (pos+2) = 'c' && String.unsafe_get s (pos+3) = 'l' && String.unsafe_get s (pos+4) = 'o' && String.unsafe_get s (pos+5) = 's' && String.unsafe_get s (pos+6) = 'i' && String.unsafe_get s (pos+7) = 'n' && String.unsafe_get s (pos+8) = 'g' && String.unsafe_get s (pos+9) = '_' && String.unsafe_get s (pos+10) = 'c' && String.unsafe_get s (pos+11) = 'o' && String.unsafe_get s (pos+12) = 'n' && String.unsafe_get s (pos+13) = 't' && String.unsafe_get s (pos+14) = 'e' && String.unsafe_get s (pos+15) = 'x' && String.unsafe_get s (pos+16) = 't' then (
+                  15
                 )
                 else (
                   -1
@@ -22042,10 +22030,10 @@ let read_cli_match_extra = (
             )
           | 15 ->
             if not (Yojson.Safe.read_null_if_possible p lb) then (
-              field_enclosure := (
+              field_enclosing_context := (
                 Some (
                   (
-                    read__enclosure_elem_list
+                    read__enclosing_context_elem_list
                   ) p lb
                 )
               );
@@ -22142,14 +22130,6 @@ let read_cli_match_extra = (
                         -1
                       )
                 )
-              | 9 -> (
-                  if String.unsafe_get s pos = 'e' && String.unsafe_get s (pos+1) = 'n' && String.unsafe_get s (pos+2) = 'c' && String.unsafe_get s (pos+3) = 'l' && String.unsafe_get s (pos+4) = 'o' && String.unsafe_get s (pos+5) = 's' && String.unsafe_get s (pos+6) = 'u' && String.unsafe_get s (pos+7) = 'r' && String.unsafe_get s (pos+8) = 'e' then (
-                    15
-                  )
-                  else (
-                    -1
-                  )
-                )
               | 10 -> (
                   if String.unsafe_get s pos = 'i' && String.unsafe_get s (pos+1) = 's' && String.unsafe_get s (pos+2) = '_' && String.unsafe_get s (pos+3) = 'i' && String.unsafe_get s (pos+4) = 'g' && String.unsafe_get s (pos+5) = 'n' && String.unsafe_get s (pos+6) = 'o' && String.unsafe_get s (pos+7) = 'r' && String.unsafe_get s (pos+8) = 'e' && String.unsafe_get s (pos+9) = 'd' then (
                     8
@@ -22232,6 +22212,14 @@ let read_cli_match_extra = (
               | 16 -> (
                   if String.unsafe_get s pos = 'v' && String.unsafe_get s (pos+1) = 'a' && String.unsafe_get s (pos+2) = 'l' && String.unsafe_get s (pos+3) = 'i' && String.unsafe_get s (pos+4) = 'd' && String.unsafe_get s (pos+5) = 'a' && String.unsafe_get s (pos+6) = 't' && String.unsafe_get s (pos+7) = 'i' && String.unsafe_get s (pos+8) = 'o' && String.unsafe_get s (pos+9) = 'n' && String.unsafe_get s (pos+10) = '_' && String.unsafe_get s (pos+11) = 's' && String.unsafe_get s (pos+12) = 't' && String.unsafe_get s (pos+13) = 'a' && String.unsafe_get s (pos+14) = 't' && String.unsafe_get s (pos+15) = 'e' then (
                     10
+                  )
+                  else (
+                    -1
+                  )
+                )
+              | 17 -> (
+                  if String.unsafe_get s pos = 'e' && String.unsafe_get s (pos+1) = 'n' && String.unsafe_get s (pos+2) = 'c' && String.unsafe_get s (pos+3) = 'l' && String.unsafe_get s (pos+4) = 'o' && String.unsafe_get s (pos+5) = 's' && String.unsafe_get s (pos+6) = 'i' && String.unsafe_get s (pos+7) = 'n' && String.unsafe_get s (pos+8) = 'g' && String.unsafe_get s (pos+9) = '_' && String.unsafe_get s (pos+10) = 'c' && String.unsafe_get s (pos+11) = 'o' && String.unsafe_get s (pos+12) = 'n' && String.unsafe_get s (pos+13) = 't' && String.unsafe_get s (pos+14) = 'e' && String.unsafe_get s (pos+15) = 'x' && String.unsafe_get s (pos+16) = 't' then (
+                    15
                   )
                   else (
                     -1
@@ -22387,10 +22375,10 @@ let read_cli_match_extra = (
               )
             | 15 ->
               if not (Yojson.Safe.read_null_if_possible p lb) then (
-                field_enclosure := (
+                field_enclosing_context := (
                   Some (
                     (
-                      read__enclosure_elem_list
+                      read__enclosing_context_elem_list
                     ) p lb
                   )
                 );
@@ -22419,7 +22407,7 @@ let read_cli_match_extra = (
             dataflow_trace = !field_dataflow_trace;
             engine_kind = !field_engine_kind;
             extra_extra = !field_extra_extra;
-            enclosure = !field_enclosure;
+            enclosing_context = !field_enclosing_context;
           }
          : cli_match_extra)
       )

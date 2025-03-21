@@ -132,7 +132,7 @@
         "extra": { "$ref": "#/definitions/cli_match_extra" }
       }
     },
-    "enclosure_elem": {
+    "enclosing_context_elem": {
       "type": "object",
       "required": [ "kind", "name" ],
       "properties": {
@@ -163,9 +163,9 @@
         "dataflow_trace": { "$ref": "#/definitions/match_dataflow_trace" },
         "engine_kind": { "$ref": "#/definitions/engine_of_finding" },
         "extra_extra": { "$ref": "#/definitions/raw_json" },
-        "enclosure": {
+        "enclosing_context": {
           "type": "array",
-          "items": { "$ref": "#/definitions/enclosure_elem" }
+          "items": { "$ref": "#/definitions/enclosing_context_elem" }
         }
       }
     },
@@ -1524,9 +1524,9 @@
         "validation_state": { "$ref": "#/definitions/validation_state" },
         "historical_info": { "$ref": "#/definitions/historical_info" },
         "extra_extra": { "$ref": "#/definitions/raw_json" },
-        "enclosure": {
+        "enclosing_context": {
           "type": "array",
-          "items": { "$ref": "#/definitions/enclosure_elem" }
+          "items": { "$ref": "#/definitions/enclosing_context_elem" }
         }
       }
     },

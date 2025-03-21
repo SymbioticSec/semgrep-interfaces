@@ -1103,8 +1103,8 @@ class Position:
 
 
 @dataclass
-class EnclosureElem:
-    """Original type: enclosure_elem = { ... }"""
+class EnclosingContextElem:
+    """Original type: enclosing_context_elem = { ... }"""
 
     kind: str
     name: str
@@ -1112,16 +1112,16 @@ class EnclosureElem:
     end: Optional[Position] = None
 
     @classmethod
-    def from_json(cls, x: Any) -> 'EnclosureElem':
+    def from_json(cls, x: Any) -> 'EnclosingContextElem':
         if isinstance(x, dict):
             return cls(
-                kind=_atd_read_string(x['kind']) if 'kind' in x else _atd_missing_json_field('EnclosureElem', 'kind'),
-                name=_atd_read_string(x['name']) if 'name' in x else _atd_missing_json_field('EnclosureElem', 'name'),
+                kind=_atd_read_string(x['kind']) if 'kind' in x else _atd_missing_json_field('EnclosingContextElem', 'kind'),
+                name=_atd_read_string(x['name']) if 'name' in x else _atd_missing_json_field('EnclosingContextElem', 'name'),
                 start=Position.from_json(x['start']) if 'start' in x else None,
                 end=Position.from_json(x['end']) if 'end' in x else None,
             )
         else:
-            _atd_bad_json('EnclosureElem', x)
+            _atd_bad_json('EnclosingContextElem', x)
 
     def to_json(self) -> Any:
         res: Dict[str, Any] = {}
@@ -1134,7 +1134,7 @@ class EnclosureElem:
         return res
 
     @classmethod
-    def from_json_string(cls, x: str) -> 'EnclosureElem':
+    def from_json_string(cls, x: str) -> 'EnclosingContextElem':
         return cls.from_json(json.loads(x))
 
     def to_json_string(self, **kw: Any) -> str:
@@ -2023,7 +2023,7 @@ class CoreMatchExtra:
     validation_state: Optional[ValidationState] = None
     historical_info: Optional[HistoricalInfo] = None
     extra_extra: Optional[RawJson] = None
-    enclosure: Optional[List[EnclosureElem]] = None
+    enclosing_context: Optional[List[EnclosingContextElem]] = None
 
     @classmethod
     def from_json(cls, x: Any) -> 'CoreMatchExtra':
@@ -2041,7 +2041,7 @@ class CoreMatchExtra:
                 validation_state=ValidationState.from_json(x['validation_state']) if 'validation_state' in x else None,
                 historical_info=HistoricalInfo.from_json(x['historical_info']) if 'historical_info' in x else None,
                 extra_extra=RawJson.from_json(x['extra_extra']) if 'extra_extra' in x else None,
-                enclosure=_atd_read_list(EnclosureElem.from_json)(x['enclosure']) if 'enclosure' in x else None,
+                enclosing_context=_atd_read_list(EnclosingContextElem.from_json)(x['enclosing_context']) if 'enclosing_context' in x else None,
             )
         else:
             _atd_bad_json('CoreMatchExtra', x)
@@ -2069,8 +2069,8 @@ class CoreMatchExtra:
             res['historical_info'] = (lambda x: x.to_json())(self.historical_info)
         if self.extra_extra is not None:
             res['extra_extra'] = (lambda x: x.to_json())(self.extra_extra)
-        if self.enclosure is not None:
-            res['enclosure'] = _atd_write_list((lambda x: x.to_json()))(self.enclosure)
+        if self.enclosing_context is not None:
+            res['enclosing_context'] = _atd_write_list((lambda x: x.to_json()))(self.enclosing_context)
         return res
 
     @classmethod
@@ -6779,7 +6779,7 @@ class CliMatchExtra:
     dataflow_trace: Optional[MatchDataflowTrace] = None
     engine_kind: Optional[EngineOfFinding] = None
     extra_extra: Optional[RawJson] = None
-    enclosure: Optional[List[EnclosureElem]] = None
+    enclosing_context: Optional[List[EnclosingContextElem]] = None
 
     @classmethod
     def from_json(cls, x: Any) -> 'CliMatchExtra':
@@ -6800,7 +6800,7 @@ class CliMatchExtra:
                 dataflow_trace=MatchDataflowTrace.from_json(x['dataflow_trace']) if 'dataflow_trace' in x else None,
                 engine_kind=EngineOfFinding.from_json(x['engine_kind']) if 'engine_kind' in x else None,
                 extra_extra=RawJson.from_json(x['extra_extra']) if 'extra_extra' in x else None,
-                enclosure=_atd_read_list(EnclosureElem.from_json)(x['enclosure']) if 'enclosure' in x else None,
+                enclosing_context=_atd_read_list(EnclosingContextElem.from_json)(x['enclosing_context']) if 'enclosing_context' in x else None,
             )
         else:
             _atd_bad_json('CliMatchExtra', x)
@@ -6832,8 +6832,8 @@ class CliMatchExtra:
             res['engine_kind'] = (lambda x: x.to_json())(self.engine_kind)
         if self.extra_extra is not None:
             res['extra_extra'] = (lambda x: x.to_json())(self.extra_extra)
-        if self.enclosure is not None:
-            res['enclosure'] = _atd_write_list((lambda x: x.to_json()))(self.enclosure)
+        if self.enclosing_context is not None:
+            res['enclosing_context'] = _atd_write_list((lambda x: x.to_json()))(self.enclosing_context)
         return res
 
     @classmethod

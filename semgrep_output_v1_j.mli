@@ -39,7 +39,7 @@ type position = Semgrep_output_v1_t.position = {
 }
   [@@deriving show]
 
-type enclosure_elem = Semgrep_output_v1_t.enclosure_elem = {
+type enclosing_context_elem = Semgrep_output_v1_t.enclosing_context_elem = {
   kind: string;
   name: string;
   start: position option;
@@ -160,7 +160,7 @@ type core_match_extra = Semgrep_output_v1_t.core_match_extra = {
   validation_state: validation_state option;
   historical_info: historical_info option;
   extra_extra: raw_json option;
-  enclosure: enclosure_elem list option
+  enclosing_context: enclosing_context_elem list option
 }
 
 type core_match = Semgrep_output_v1_t.core_match = {
@@ -580,7 +580,7 @@ type cli_match_extra = Semgrep_output_v1_t.cli_match_extra = {
   dataflow_trace: match_dataflow_trace option;
   engine_kind: engine_of_finding option;
   extra_extra: raw_json option;
-  enclosure: enclosure_elem list option
+  enclosing_context: enclosing_context_elem list option
 }
 
 type cli_match = Semgrep_output_v1_t.cli_match = {
@@ -1039,25 +1039,25 @@ val position_of_string :
   string -> position
   (** Deserialize JSON data of type {!type:position}. *)
 
-val write_enclosure_elem :
-  Buffer.t -> enclosure_elem -> unit
-  (** Output a JSON value of type {!type:enclosure_elem}. *)
+val write_enclosing_context_elem :
+  Buffer.t -> enclosing_context_elem -> unit
+  (** Output a JSON value of type {!type:enclosing_context_elem}. *)
 
-val string_of_enclosure_elem :
-  ?len:int -> enclosure_elem -> string
-  (** Serialize a value of type {!type:enclosure_elem}
+val string_of_enclosing_context_elem :
+  ?len:int -> enclosing_context_elem -> string
+  (** Serialize a value of type {!type:enclosing_context_elem}
       into a JSON string.
       @param len specifies the initial length
                  of the buffer used internally.
                  Default: 1024. *)
 
-val read_enclosure_elem :
-  Yojson.Safe.lexer_state -> Lexing.lexbuf -> enclosure_elem
-  (** Input JSON data of type {!type:enclosure_elem}. *)
+val read_enclosing_context_elem :
+  Yojson.Safe.lexer_state -> Lexing.lexbuf -> enclosing_context_elem
+  (** Input JSON data of type {!type:enclosing_context_elem}. *)
 
-val enclosure_elem_of_string :
-  string -> enclosure_elem
-  (** Deserialize JSON data of type {!type:enclosure_elem}. *)
+val enclosing_context_elem_of_string :
+  string -> enclosing_context_elem
+  (** Deserialize JSON data of type {!type:enclosing_context_elem}. *)
 
 val write_location :
   Buffer.t -> location -> unit

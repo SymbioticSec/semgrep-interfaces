@@ -268,7 +268,7 @@ type cli_match = {
   extra: cli_match_extra;
 }
 
-type enclosure_elem = {
+type enclosing_context_elem = {
   kind : string;
   name : string;
   ?start : position option;
@@ -322,8 +322,8 @@ type cli_match_extra = {
   (* EXPERIMENTAL: see core_match_extra.extra_extra *)
   ?extra_extra: raw_json option;
   
-  (* EXPERIMENTAL: enclosure of the match *)
-  ?enclosure: enclosure_elem list option;
+  (* EXPERIMENTAL: enclosing_context of the match *)
+  ?enclosing_context: enclosing_context_elem list option;
 }
 
 (*****************************************************************************)
@@ -1840,8 +1840,8 @@ type core_match_extra <python decorator="dataclass(frozen=True)"> = {
    *)
   ?extra_extra: raw_json option;
   
-  (* EXPERIMENTAL: enclosure of the match *)
-  ?enclosure: enclosure_elem list option;
+  (* EXPERIMENTAL: enclosing_context of the match *)
+  ?enclosing_context: enclosing_context_elem list option;
 }
 
 (* See Semgrep_error_code.ml *)
