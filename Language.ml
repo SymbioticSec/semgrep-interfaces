@@ -83,13 +83,13 @@ let list = [
   id_string = "apex";
   name = "Apex";
   keys = [{|apex|}];
-  exts = [{|.cls|}];
+  exts = [{|.cls|}; {|.trigger|}];
   maturity = Develop;
   example_ext = None;
   excluded_exts = [];
   reverse_exts = None;
   shebangs = [];
-  tags = [{|is_proprietary|}];
+  tags = [];
 };
 {
   id = Bash;

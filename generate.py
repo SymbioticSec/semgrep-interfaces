@@ -199,10 +199,10 @@ LANGUAGES : List[Language] = [
         id_="apex",
         name="Apex",
         keys=["apex"],
-        exts=[".cls"],
+        exts=[".cls", ".trigger"],
         maturity=Maturity.DEVELOP,
         shebangs=[],
-        tags=["is_proprietary"]
+        tags=[]
     ),
     Language(
         comment="",

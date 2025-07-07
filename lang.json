@@ -7,7 +7,8 @@
     ],
     "maturity": "develop",
     "exts": [
-      ".cls"
+      ".cls",
+      ".trigger"
     ],
     "example_ext": null,
     "excluded_exts": [],
@@ -15,7 +16,6 @@
     "shebangs": [],
     "is_target_language": true,
     "tags": [
-      "is_proprietary"
     ]
   },
   {
