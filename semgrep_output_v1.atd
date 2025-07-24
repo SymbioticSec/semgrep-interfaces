@@ -87,7 +87,7 @@ type raw_json <ocaml module="Yojson.Basic" t="t"> = abstract
  * See libs/commons/ATD_string_wrap.ml for more info on those ATD_string_wrap.
  *)
 type fpath
-     <ocaml attr="deriving show, eq">
+     <ocaml attr="deriving show, eq, ord">
      <python decorator="dataclass(frozen=True)"> =
    string wrap <ocaml module="ATD_string_wrap.Fpath">
 
@@ -110,7 +110,7 @@ type version <ocaml attr="deriving show"> = string (* e.g., "1.1.0" *)
 (*****************************************************************************)
 (* Note that there is no filename here like in 'location' below *)
 type position
-    <ocaml attr="deriving show">
+    <ocaml attr="deriving show, ord">
     <python decorator="dataclass(frozen=True, order=True)"> =
 {
   line: int; (* starts from 1 *)
@@ -127,7 +127,7 @@ type position
 
 (* a.k.a range *)
 type location
-     <ocaml attr="deriving show">
+     <ocaml attr="deriving show, ord">
      <python decorator="dataclass(frozen=True)"> =
 {
   path: fpath;
@@ -460,7 +460,9 @@ type matching_operation
  *  taint_sink = CliCall("bar()" @l9, ["v"], CliLoc "sink(v) @l5")
  *)
 
-type match_dataflow_trace <python decorator="dataclass(frozen=True)"> = {
+type match_dataflow_trace
+  <ocaml attr="deriving show, ord">
+  <python decorator="dataclass(frozen=True)"> = {
   ?taint_source: match_call_trace option;
   (* Intermediate variables which are involved in the dataflow. This
    * explains how the taint flows from the source to the sink. *)
@@ -475,9 +477,13 @@ type match_dataflow_trace <python decorator="dataclass(frozen=True)"> = {
  * maybe this saves some effort to the user of this type which do not
  * need to read the file to get the content.
  *)
-type loc_and_content = (location * string)
+type loc_and_content
+ <ocaml attr="deriving show, ord"> =
+ (location * string)
 
-type match_call_trace <python decorator="dataclass(frozen=True, order=True)"> =
+type match_call_trace
+  <ocaml attr="deriving show, ord">
+  <python decorator="dataclass(frozen=True, order=True)"> =
 [
   | CliLoc of loc_and_content
   | CliCall of (loc_and_content * match_intermediate_var list * match_call_trace)
@@ -487,7 +493,9 @@ type match_call_trace <python decorator="dataclass(frozen=True, order=True)"> =
 (* This type happens to be mostly the same as a loc_and_content for now, but
  * it's split out because Iago has plans to extend this with more information
 *)
-type match_intermediate_var <python decorator="dataclass(frozen=True)"> = {
+type match_intermediate_var
+  <ocaml attr="deriving show, ord">
+  <python decorator="dataclass(frozen=True)"> = {
   location: location;
   (* Unlike abstract_content, this is the actual text read from the
    * corresponding source file *)
