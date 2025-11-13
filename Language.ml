@@ -43,6 +43,7 @@ type t =
 | Swift
 | Terraform
 | Ts
+| Vb
 | Vue
 | Xml
 | Yaml
@@ -622,6 +623,19 @@ let list = [
   reverse_exts = None;
   shebangs = [{|ts-node|}];
   tags = [{|is_js|}];
+};
+{
+  id = Vb;
+  id_string = "vb";
+  name = "Vb";
+  keys = [{|vb|}];
+  exts = [{|.vb|}];
+  maturity = Alpha;
+  example_ext = None;
+  excluded_exts = [];
+  reverse_exts = None;
+  shebangs = [];
+  tags = [];
 };
 {
   id = Vue;

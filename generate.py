@@ -595,6 +595,16 @@ not ambiguous is welcome here.
     ),
     Language(
         comment="",
+        id_="vb",
+        name="Vb",
+        keys=["vb"],
+        exts=[".vb"],
+        maturity=Maturity.ALPHA,
+        shebangs=[],
+        tags=[]
+    ),
+    Language(
+        comment="",
         id_="vue",
         name="Vue",
         keys=["vue"],

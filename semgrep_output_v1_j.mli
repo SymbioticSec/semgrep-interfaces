@@ -10,7 +10,7 @@ type dependency_child = Semgrep_output_v1_t.dependency_child = {
 
 type ecosystem = Semgrep_output_v1_t.ecosystem [@@deriving show,eq]
 
-type fpath = Semgrep_output_v1_t.fpath [@@deriving show, eq]
+type fpath = Semgrep_output_v1_t.fpath [@@deriving show, eq, ord]
 
 type match_severity = Semgrep_output_v1_t.match_severity
   [@@deriving show, eq]
@@ -37,7 +37,7 @@ type position = Semgrep_output_v1_t.position = {
   col: int;
   offset: int
 }
-  [@@deriving show]
+  [@@deriving show, ord]
 
 type enclosing_context_elem = Semgrep_output_v1_t.enclosing_context_elem = {
   kind: string;
@@ -51,14 +51,16 @@ type location = Semgrep_output_v1_t.location = {
   start: position;
   end_ (*atd end *): position
 }
-  [@@deriving show]
+  [@@deriving show, ord]
 
 type loc_and_content = Semgrep_output_v1_t.loc_and_content
+  [@@deriving show, ord]
 
 type match_intermediate_var = Semgrep_output_v1_t.match_intermediate_var = {
   location: location;
   content: string
 }
+  [@@deriving show, ord]
 
 type pro_feature = Semgrep_output_v1_t.pro_feature = {
   interproc_taint: bool;
@@ -140,12 +142,14 @@ type match_call_trace = Semgrep_output_v1_t.match_call_trace =
   | CliCall
       of (loc_and_content * match_intermediate_var list * match_call_trace)
 
+  [@@deriving show, ord]
 
 type match_dataflow_trace = Semgrep_output_v1_t.match_dataflow_trace = {
   taint_source: match_call_trace option;
   intermediate_vars: match_intermediate_var list option;
   taint_sink: match_call_trace option
 }
+  [@@deriving show, ord]
 
 type core_match_extra = Semgrep_output_v1_t.core_match_extra = {
   metavars: metavars;

@@ -43,6 +43,7 @@ type t =
 | Swift
 | Terraform
 | Ts
+| Vb
 | Vue
 | Xml
 | Yaml

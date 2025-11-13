@@ -15,8 +15,7 @@
     "reverse_exts": null,
     "shebangs": [],
     "is_target_language": true,
-    "tags": [
-    ]
+    "tags": []
   },
   {
     "id": "bash",
@@ -810,6 +809,23 @@
     "tags": [
       "is_js"
     ]
+  },
+  {
+    "id": "vb",
+    "name": "Vb",
+    "keys": [
+      "vb"
+    ],
+    "maturity": "alpha",
+    "exts": [
+      ".vb"
+    ],
+    "example_ext": null,
+    "excluded_exts": [],
+    "reverse_exts": null,
+    "shebangs": [],
+    "is_target_language": true,
+    "tags": []
   },
   {
     "id": "vue",
