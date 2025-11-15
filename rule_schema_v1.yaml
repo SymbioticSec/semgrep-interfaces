@@ -880,6 +880,7 @@ $defs:
             - terraform
             - ts
             - typescript
+            - vb
             - vue
             - yaml
 required:

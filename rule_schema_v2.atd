@@ -192,6 +192,7 @@ type language = [
   | Ts           <json name="ts">
   | Typescript   <json name="typescript">
   | Vue          <json name="vue">
+  | Vb           <json name="vb">
   | Yaml         <json name="yaml">
 
   (* a.k.a., spacegrep and aliengrep
