@@ -638,13 +638,23 @@
     "target_times": {
       "type": "object",
       "required": [
-        "path", "num_bytes", "match_times", "parse_times", "run_time"
+        "path", "num_bytes", "match_times", "parse_time", "run_time"
       ],
       "properties": {
         "path": { "$ref": "#/definitions/fpath" },
         "num_bytes": { "type": "integer" },
-        "match_times": { "type": "array", "items": { "type": "number" } },
-        "parse_times": { "type": "array", "items": { "type": "number" } },
+        "match_times": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "minItems": 2,
+            "items": false,
+            "prefixItems": [
+              { "$ref": "#/definitions/rule_id" }, { "type": "number" }
+            ]
+          }
+        },
+        "parse_time": { "type": "number" },
         "run_time": { "type": "number" }
       }
     },
