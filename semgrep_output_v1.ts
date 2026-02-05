@@ -354,8 +354,8 @@ export type Profile = {
 export type TargetTimes = {
   path: Fpath;
   num_bytes: number /*int*/;
-  match_times: number[];
-  parse_times: number[];
+  match_times: [RuleId, number][];
+  parse_time: number;
   run_time: number;
 }
 
@@ -2177,8 +2177,8 @@ export function writeTargetTimes(x: TargetTimes, context: any = x): any {
   return {
     'path': _atd_write_required_field('TargetTimes', 'path', writeFpath, x.path, x),
     'num_bytes': _atd_write_required_field('TargetTimes', 'num_bytes', _atd_write_int, x.num_bytes, x),
-    'match_times': _atd_write_required_field('TargetTimes', 'match_times', _atd_write_array(_atd_write_float), x.match_times, x),
-    'parse_times': _atd_write_required_field('TargetTimes', 'parse_times', _atd_write_array(_atd_write_float), x.parse_times, x),
+    'match_times': _atd_write_required_field('TargetTimes', 'match_times', _atd_write_array(((x, context) => [writeRuleId(x[0], x), _atd_write_float(x[1], x)])), x.match_times, x),
+    'parse_time': _atd_write_required_field('TargetTimes', 'parse_time', _atd_write_float, x.parse_time, x),
     'run_time': _atd_write_required_field('TargetTimes', 'run_time', _atd_write_float, x.run_time, x),
   };
 }
@@ -2187,8 +2187,8 @@ export function readTargetTimes(x: any, context: any = x): TargetTimes {
   return {
     path: _atd_read_required_field('TargetTimes', 'path', readFpath, x['path'], x),
     num_bytes: _atd_read_required_field('TargetTimes', 'num_bytes', _atd_read_int, x['num_bytes'], x),
-    match_times: _atd_read_required_field('TargetTimes', 'match_times', _atd_read_array(_atd_read_float), x['match_times'], x),
-    parse_times: _atd_read_required_field('TargetTimes', 'parse_times', _atd_read_array(_atd_read_float), x['parse_times'], x),
+    match_times: _atd_read_required_field('TargetTimes', 'match_times', _atd_read_array(((x, context): [RuleId, number] => { _atd_check_json_tuple(2, x, context); return [readRuleId(x[0], x), _atd_read_float(x[1], x)] })), x['match_times'], x),
+    parse_time: _atd_read_required_field('TargetTimes', 'parse_time', _atd_read_float, x['parse_time'], x),
     run_time: _atd_read_required_field('TargetTimes', 'run_time', _atd_read_float, x['run_time'], x),
   };
 }

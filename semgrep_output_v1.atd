@@ -858,7 +858,7 @@ type profile = {
      * Upgrade note: this used to be defined as a rule_id_dict where
      * each rule_id was inside a {id: rule_id; ...} record so
      * we could give parsing time info about each rule, but
-     * parsing one rule was never the slow part, so now we just juse the
+     * parsing one rule was never the slow part, so now we just use the
      * aggregated rules_parse_time below and do not need a
      * complex rule_id_dict record anymore.
      *)
@@ -894,16 +894,24 @@ type profile = {
 type target_times = {
     path: fpath;
     num_bytes: int;
-    (* each elt in the list refers to a rule in profile.rules *)
-    match_times: float list;
-    (* emma: "when we were first diagnosing performance, I recorded every time
-     * the file was read (including the later times that were just reloading
-     * the parsed file) to make sure reading the file wasn't taking a significant
-     * amount of time. Now that we know it isn't, we don't need to record this
-     * anymore.
-     * TODO: just use a single float instead."
+    (* List of (rule_id, time) tuples for rules that ran on this file.
+     * Only includes rules with non-zero match time.
      *)
-    parse_times: float list;
+    match_times: (rule_id * float) list;
+    (* Time spent on non-matching work for this file.
+     * Estimated as: run_time - sum(match_times)
+     *
+     * Includes:
+     * - Prefiltering: reading file as string and running regex checks to
+     *   determine which rules are relevant (always happens when optimizations enabled)
+     * - AST parsing: parsing file to AST if any rules pass prefiltering
+     *   (only happens if match_times is non-empty, or if optimizations disabled)
+     *
+     * Important: Files with match_times=[] and non-zero parse_time spent that
+     * time on prefiltering only (no AST parsing). All rules were filtered out
+     * by regex checks, so AST parsing was skipped entirely.
+     *)
+    parse_time: float;
     (* run time for all rules on target *)
     run_time: float;
 }

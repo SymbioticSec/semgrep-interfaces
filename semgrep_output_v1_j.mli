@@ -303,8 +303,8 @@ type targets = Semgrep_output_v1_t.targets [@@deriving show]
 type target_times = Semgrep_output_v1_t.target_times = {
   path: fpath;
   num_bytes: int;
-  match_times: float list;
-  parse_times: float list;
+  match_times: (rule_id * float) list;
+  parse_time: float;
   run_time: float
 }
 

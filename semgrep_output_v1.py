@@ -3600,8 +3600,8 @@ class TargetTimes:
 
     path: Fpath
     num_bytes: int
-    match_times: List[float]
-    parse_times: List[float]
+    match_times: List[Tuple[RuleId, float]]
+    parse_time: float
     run_time: float
 
     @classmethod
@@ -3610,8 +3610,8 @@ class TargetTimes:
             return cls(
                 path=Fpath.from_json(x['path']) if 'path' in x else _atd_missing_json_field('TargetTimes', 'path'),
                 num_bytes=_atd_read_int(x['num_bytes']) if 'num_bytes' in x else _atd_missing_json_field('TargetTimes', 'num_bytes'),
-                match_times=_atd_read_list(_atd_read_float)(x['match_times']) if 'match_times' in x else _atd_missing_json_field('TargetTimes', 'match_times'),
-                parse_times=_atd_read_list(_atd_read_float)(x['parse_times']) if 'parse_times' in x else _atd_missing_json_field('TargetTimes', 'parse_times'),
+                match_times=_atd_read_list((lambda x: (RuleId.from_json(x[0]), _atd_read_float(x[1])) if isinstance(x, list) and len(x) == 2 else _atd_bad_json('array of length 2', x)))(x['match_times']) if 'match_times' in x else _atd_missing_json_field('TargetTimes', 'match_times'),
+                parse_time=_atd_read_float(x['parse_time']) if 'parse_time' in x else _atd_missing_json_field('TargetTimes', 'parse_time'),
                 run_time=_atd_read_float(x['run_time']) if 'run_time' in x else _atd_missing_json_field('TargetTimes', 'run_time'),
             )
         else:
@@ -3621,8 +3621,8 @@ class TargetTimes:
         res: Dict[str, Any] = {}
         res['path'] = (lambda x: x.to_json())(self.path)
         res['num_bytes'] = _atd_write_int(self.num_bytes)
-        res['match_times'] = _atd_write_list(_atd_write_float)(self.match_times)
-        res['parse_times'] = _atd_write_list(_atd_write_float)(self.parse_times)
+        res['match_times'] = _atd_write_list((lambda x: [(lambda x: x.to_json())(x[0]), _atd_write_float(x[1])] if isinstance(x, tuple) and len(x) == 2 else _atd_bad_python('tuple of length 2', x)))(self.match_times)
+        res['parse_time'] = _atd_write_float(self.parse_time)
         res['run_time'] = _atd_write_float(self.run_time)
         return res
 
